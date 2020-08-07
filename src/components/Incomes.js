@@ -2,6 +2,9 @@ import React, {  useEffect, useState } from "react";
 import { Container, Row, Col, Table, Button, Form } from "react-bootstrap";
 import IncomesMdl from "./IncomesMdl";
 
+
+//hakan heyoo
+
 const Incomes = ({ newIncome,customers,deleteIncome }) => {
 //console.log(newIncome)
   /*const [allInvoice, setInvices] = useState([]);
