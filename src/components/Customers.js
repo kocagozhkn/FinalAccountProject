@@ -160,7 +160,15 @@ const Customers = ({ customers, newCustomer, deleteCustomer,upDateCustomer }) =>
               )}
             </td>
 
-            <td>{el.debit}</td>
+            <td>{el.debit
+              .map((x) => x.totalUsdInvoice)
+              .reduce(function (accu, y) {
+                return accu + y;
+              }, 0)
+              .toLocaleString(undefined, {
+                style: "currency",
+                currency: "USD",
+              })}</td>
             <td> {el.credit
               .map((x) => x.amount)
               .reduce(function (accu, y) {

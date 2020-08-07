@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Container, Row, Col, Table, Form, Button } from "react-bootstrap";
 import Mdlinv from "./Mdlinv";
-
+import moment from "moment"
 export default function Invoices({ invoices, newInvoice, customers,upDateInvoice }) {
   //console.log(typeof invoices)
 
@@ -46,9 +46,10 @@ invoiceDate: { type: Date },
 */
   function openEditMode(val) {
     setEditMode(val);
-    const comp = invoices.filter(el => el._id === val);
-    //console.log(comp)
-    setInvoiceList({
+    //const comp = invoices.filter(el => el._id === val);
+    const comp = customers.map(el=>el.debit.map(el=>el).filter(el => el._id === val))
+    console.log(comp)
+    /*setInvoiceList({
       _id:comp[0]._id,invoiceNo: comp[0].invoiceNo,
       invoiceDate: comp[0].invoiceDate,
       company: comp[0].company,
@@ -62,7 +63,7 @@ invoiceDate: { type: Date },
       parity: comp[0].parity,
       totalUsdInvoice:comp[0].totalUsdInvoice,
       notes: comp[0].notes
-    });
+    });*/
   }
   function cancelEditMode() {
     setEditMode("");
@@ -113,204 +114,211 @@ function deleteCustomer(){
   }
 
   const tableElements = () =>
-    invoices.map(el => {
-      return (
-        <Fragment key={el._id}>
-          <tr>
-            <td>#</td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="INVOICE_NO"
-                  value={invoiceList.invoiceNo}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.invoiceNo}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="INVOICE_DATE"
-                  value={invoiceList.invoiceDate}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.invoiceDate}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="COMPANY"
-                  value={invoiceList.company}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.company}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="COUNTRY"
-                  value={invoiceList.country}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.country}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="TRANS_COUNTRY"
-                  value={invoiceList.transCountry}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.transCountry}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="SBIF_NO"
-                  value={invoiceList.sbifNo}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.sbifNo}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="NET"
-                  value={invoiceList.net}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.net}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="GROSS"
-                  value={invoiceList.gross}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.gross}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="CURRENCY"
-                  value={invoiceList.currency}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.currency}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="TOTAL_INVOICE"
-                  value={invoiceList.totalInvoice}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.totalInvoice}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="PARITY"
-                  value={invoiceList.parity}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.parity}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="TOTAL_USD"
-                  value={invoiceList.totalUsdInvoice}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.totalUsdInvoice}</span>
-              )}
-            </td>
-            <td>
-              {editMode === el._id ? (
-                <Form.Control
-                  type="text"
-                  name="NOTES"
-                  value={invoiceList.notes}
-                  onChange={handleChangeAll}
-                />
-              ) : (
-                <span>{el.notes}</span>
-              )}
-            </td>
+  customers.map(el=>{
+return (
+  el.debit.filter(el=>el.amount!==null).map(el=>(
+    
+      <Fragment key={el._id}>
+        <tr>
+          <td>#</td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="INVOICE_NO"
+                value={el.invoiceNo}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.invoiceNo}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="INVOICE_DATE"
+                value={moment(el.invoiceDate).format("YYYY-MM-DD")}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{moment(el.invoiceDate).format("YYYY-MM-DD")}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="COMPANY"
+                value={el.company}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.company}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="COUNTRY"
+                value={el.country}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.country}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="TRANS_COUNTRY"
+                value={el.transCountry}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.transCountry}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="SBIF_NO"
+                value={el.sbifNo}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.sbifNo}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="NET"
+                value={el.net}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.net}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="GROSS"
+                value={el.gross}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.gross}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="CURRENCY"
+                value={el.currency}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.currency}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="TOTAL_INVOICE"
+                value={el.totalInvoice}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.totalInvoice}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="PARITY"
+                value={el.parity}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.parity}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="TOTAL_USD"
+                value={el.totalUsdInvoice}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.totalUsdInvoice}</span>
+            )}
+          </td>
+          <td>
+            {editMode === el._id ? (
+              <Form.Control
+                type="text"
+                name="NOTES"
+                value={el.notes}
+                onChange={handleChangeAll}
+              />
+            ) : (
+              <span>{el.notes}</span>
+            )}
+          </td>
 
-            <td>
-              {editMode === el._id ? (
-                <Button
-                  variant="warning"
-                  size="sm"
-                  onClick={() => cancelEditMode()}
-                >
-                  Cancel
-                </Button>
-              ) : (
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => deleteCustomer(el._id)}
-                >
-                  Del
-                </Button>
-              )}{" "}
-              {editMode === el._id ? (
-                <Button variant="success" size="sm" onClick={() => saveForm()}>
-                  Save
-                </Button>
-              ) : (
-                <Button
-                  variant="info"
-                  size="sm"
-                  onClick={() => openEditMode(el._id)}
-                >
-                  Edit
-                </Button>
-              )}
-            </td>
-          </tr>
-        </Fragment>
-      );
-    });
+          <td>
+            {editMode === el._id ? (
+              <Button
+                variant="warning"
+                size="sm"
+                onClick={() => cancelEditMode()}
+              >
+                Cancel
+              </Button>
+            ) : (
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => deleteCustomer(el._id)}
+              >
+                Del
+              </Button>
+            )}{" "}
+            {editMode === el._id ? (
+              <Button variant="success" size="sm" onClick={() => saveForm()}>
+                Save
+              </Button>
+            ) : (
+              <Button
+                variant="info"
+                size="sm"
+                onClick={() => openEditMode(el._id)}
+              >
+                Edit
+              </Button>
+            )}
+          </td>
+        </tr>
+      </Fragment>
+    
+))
+)
+ 
+    
+  })
+ 
 
   //console.log(invoices.length)
 

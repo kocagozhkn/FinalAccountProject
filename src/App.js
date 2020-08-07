@@ -68,6 +68,7 @@ const [allIncomes, setIncomes] = useState([])
 
 
   function addNewInvoice(value) {
+    console.log(value)
     //invoices.push(value);
 /* 
 
@@ -89,11 +90,12 @@ USD_DOVIZ: "22"
 
 */
    axios
-      .post("https://fittingentirebrain--hakankocagoz.repl.co/routes/postinvoice", {
+      .post(`https://fittingentirebrain--hakankocagoz.repl.co/routes/postinvoice/${
+        value.ID
+      }`, {
         invoiceNo: value.FATURA_NO,
       invoiceDate: value.FATURA_TARIHI,
-      company: value.FIRMA,
-      country:value.GIDECEGI_ULKE,
+   
       transCountry: value.GIDECEGI_ULKE,
       sbifNo: value.SBIF_NO,
       net: value.NET,
@@ -105,7 +107,7 @@ USD_DOVIZ: "22"
       notes: value.NOTLAR
       })
       .then(function(response) {
-        fetcInvoices();
+        fetcCustomers();
       })
       .catch(function(error) {
         console.log(error);
@@ -156,7 +158,7 @@ ID: "5f2561f605fafe0236cf832e"
         address: value.ADDRESS,
         country: value.COUNTRY,
         currency: value.CURRENCY,
-        debit: 0,
+        debit: [],
         credit: []
       })
       .then(function(response) {

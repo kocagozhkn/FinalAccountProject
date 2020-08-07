@@ -34,7 +34,8 @@ function MyVerticallyCenteredModal(props) {
     FATURA: "",
     PARITE: "",
     USD_DOVIZ: "",
-    NOTLAR: ""
+    NOTLAR: "",
+    ID:""
   });
   const [currency, setCurrency] = useState([]);
 
@@ -77,13 +78,18 @@ function MyVerticallyCenteredModal(props) {
     const target = e.target;
     const value = target.value;
     const name = target.name;
+    const id = props.customers.filter(el=>el.company.trim()===value)
+  
+    //console.log(id[0]._id)
+    /*if (name === "COMPANY") {     
+      setFormValues({ ...formValues, COMPANY: value,ID:id[0]._id});*/
 
     if (name === "FATURA_NO") {
-      setFormValues({ ...formValues, FATURA_NO: value });
+      setFormValues({ ...formValues, FATURA_NO: value});
     } else if (name === "FATURA_TARIHI") {
       setFormValues({ ...formValues, FATURA_TARIHI: value });
     } else if (name === "FIRMA") {
-      setFormValues({ ...formValues, FIRMA: value });
+      setFormValues({ ...formValues, FIRMA: value,ID:id[0]._id });
     } else if (name === "GIDECEGI_ULKE") {
       setFormValues({ ...formValues, GIDECEGI_ULKE: value });
     } else if (name === "TRANSIT_TIC") {

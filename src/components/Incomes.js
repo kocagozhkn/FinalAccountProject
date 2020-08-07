@@ -1,7 +1,7 @@
 import React, {  useEffect, useState } from "react";
 import { Container, Row, Col, Table, Button, Form } from "react-bootstrap";
 import IncomesMdl from "./IncomesMdl";
-
+import moment from "moment"
 
 //hakan heyoo
 
@@ -164,11 +164,11 @@ const Incomes = ({ newIncome,customers,deleteIncome }) => {
                 <Form.Control
                   type="text"
                   name="INCOMEDATE"
-                  value={el.incomeDate}
+                  value={moment(el.incomeDate).format("YYYY-MM-DD")}
                   onChange={handleChangeAll}
                 />
               ) : (
-                <span>{el.incomeDate}</span>
+                <span>{moment(el.incomeDate).format("YYYY-MM-DD")}</span>
               )}
             </td>
             <td>
